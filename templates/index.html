@@ -1,0 +1,141 @@
+<!DOCTYPE html>  
+<html lang="en">
+
+<head>  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <title>Flask App</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/application.js', version='120517') }}"></script>
+</head>
+
+<body>
+	<h1>System state</h1>
+    {% if system_state == 'ON' %}
+        {% set button_style = "primary" %}
+        {% set label = "ON - click to turn off" %}
+        {% set action = "OFF" %}
+        {% set disabled = "" %}
+    {% elif system_state == 'OFF' %}
+        {% set button_style = "default" %}
+        {% set label = "OFF - click to turn on" %}
+        {% set action = "ON" %}
+        {% set disabled = "" %}
+    {% elif system_state == 'ALARM' %}
+        {% set button_style = "danger" %}
+        {% set label = "ALARM - click to turn off" %}
+        {% set action = "OFF" %}
+        {% set disabled = "" %}
+    {% elif system_state == 'UNDEFINED' %}
+        {% set button_style = "secondary" %}
+        {% set label = "UNDEFINED" %}
+        {% set action = "" %}
+        {% set disabled = "disabled" %}
+    {% else %}
+        {% set button_style = "warning" %}
+        {% set label = "ERROR" %}
+        {% set action = "" %}
+        {% set disabled = "disabled" %}
+    {% endif %}
+
+    <form class="form-signin" action="/signUp" method="post" role="form">
+        <input type="hidden" name="btnAction" value="{{ action }}" class="form-control">
+        <button id="buttonSetSystem" class="btn btn-block btn-lg btn-{{button_style}}" type="button" {{ disabled }}>{{ label }}</button>
+    </form>
+
+<h1>Zones</h1>
+    {% for zone in zones %}
+        {% set action = "" %}
+        {% if zones[zone].status == 'DETECTING' %}
+            {% set button_style = "danger" %}
+        {% elif zones[zone].status == 'DETECTED' %}
+            {% set button_style = "warning" %}
+        {% elif zones[zone].status == 'OFF' %}
+            {% set button_style = "success" %}
+        {% else %}
+            {% set button_style = "secondary" %}
+        {% endif %}
+        <button id="buttonZone" 
+                class="btn btn-block btn-lg btn-{{button_style}}" 
+                type="button" {{ disabled }}>{{ zones[zone].name }}
+        </button>
+    {% endfor %}
+   
+<h1>Debug</h1>
+   <p></p>ZONES : {% print zones %}</p>
+   <p>SYSTEM : {% print system_state %}</p>
+
+
+<div class="col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Notifications Panel
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-comment fa-fw"></i> New Comment
+                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                    <span class="pull-right text-muted small"><em>12 minutes ago</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                    <span class="pull-right text-muted small"><em>27 minutes ago</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-tasks fa-fw"></i> New Task
+                    <span class="pull-right text-muted small"><em>43 minutes ago</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                    <span class="pull-right text-muted small"><em>11:32 AM</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-bolt fa-fw"></i> Server Crashed!
+                    <span class="pull-right text-muted small"><em>11:13 AM</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-warning fa-fw"></i> Server Not Responding
+                    <span class="pull-right text-muted small"><em>10:57 AM</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed
+                    <span class="pull-right text-muted small"><em>9:49 AM</em>
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-money fa-fw"></i> Payment Received
+                    <span class="pull-right text-muted small"><em>Yesterday</em>
+                    </span>
+                </a>
+            </div>
+            <!-- /.list-group -->
+            <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+</div>
+<!-- /.panel -->
+ 
+
+
+</body>
+
+</html>
