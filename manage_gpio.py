@@ -35,12 +35,6 @@ def get_gpio_state():
         SYSTEM_IN[pin]['gpio'] = GPIO.input(pin)
         set_input_status_from_state(pin)
 
-def set_fake_data_for_debug():
-    for pin in ZONES:
-        set_zone_status_from_state(pin)
-    for pin in SYSTEM_IN:
-        set_input_status_from_state(pin)
-
 def set_zone_status_from_state(ZONES):
     for pin in ZONES:
         # previous status unknown => status is DETECTING or OFF
@@ -58,13 +52,13 @@ def set_zone_status_from_state(ZONES):
                     ZONES[pin]['status'] = 'DETECTED'
                 else:
                     ZONES[pin]['status'] = 'OFF'
-    print(ZONES)
     return(ZONES)
     
+#inutilise car utilise seulement valeur gpio state
 def set_input_status_from_state(pin):
     if SYSTEM_IN[pin]['gpio'] == 1:
         SYSTEM_IN[pin]['status'] = 'ON'
-    else:
+    else :
         SYSTEM_IN[pin]['status'] = 'OFF'
 
 def set_gpio_power_alarm(action):
