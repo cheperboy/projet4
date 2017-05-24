@@ -1,4 +1,5 @@
 from appconfig import *
+from database import *
 
 if MODE_APP_PROD:
     GPIO.setmode(GPIO.BCM)
@@ -41,12 +42,14 @@ def set_zone_status_from_state(ZONES):
         if ZONES[pin]['status'] == 'UNDEFINED':
             if ZONES[pin]['gpio'] == 1:
                 ZONES[pin]['status'] = 'DETECTING'
+                add_event('zone', ZONES[pin]['name']+' detecting')
             elif ZONES[pin]['gpio'] == 0:
                 ZONES[pin]['status'] = 'OFF'
         # previous status was set
         else:
             if ZONES[pin]['gpio'] == 1:
                 ZONES[pin]['status'] = 'DETECTING'
+                add_event('zone', ZONES[pin]['name']+' detecting')
             elif ZONES[pin]['gpio'] == 0:
                 if ZONES[pin]['status'] == 'DETECTING' or ZONES[pin]['status'] == 'DETECTED':
                     ZONES[pin]['status'] = 'DETECTED'
@@ -63,6 +66,12 @@ def set_input_status_from_state(pin):
 
 def set_gpio_power_alarm(action):
     if action == 'ON':
+        GPIO.output(PIN_POWER_ALARM, GPIO.HIGH)
+    elif action == 'OFF':
+        GPIO.output(PIN_POWER_ALARM, GPIO.LOW)
+
+def fake_set_gpio_zone(zone, val):
+    if val:
         GPIO.output(PIN_POWER_ALARM, GPIO.HIGH)
     elif action == 'OFF':
         GPIO.output(PIN_POWER_ALARM, GPIO.LOW)

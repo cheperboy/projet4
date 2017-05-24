@@ -4,6 +4,7 @@ from flask import *
 from manage_data import *
 from appconfig import *
 from manage_gpio import *
+from database import *
 app = Flask(__name__)
 
 init_data()
@@ -26,7 +27,7 @@ def main():
         system_state = SYSTEM_IN[str(PIN_READ_STATE)]['status']
 
     if MODE_APP_TEST:
-        toto = get_toto()
+        events = get_events()
         ZONES = update_zones(ZONES)
         SYSTEM_IN = get_system()
         system_state = SYSTEM_IN[str(PIN_READ_STATE)]['status']
@@ -35,7 +36,7 @@ def main():
       'zones' : ZONES,
       'system_state' : system_state,
       'system' : SYSTEM_IN,
-      'toto' : toto
+      'events' : events
     }
     return render_template('index.html', **templateData)
 

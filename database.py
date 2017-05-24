@@ -1,50 +1,38 @@
-import sqlite3
-#FSM_STATE = ['UNDEFINED', 'ON', 'OFF', 'ALARM', 'ACK']
-#ZONE_STATE = ['UNDEFINED', 'OFF', 'DETECTING', 'DETECTED', 'ACK']
+import sqlite3, os.path
+from datetime import datetime
 
+DB_FILE = "database.db"
 def init_db():
-    db = sqlite3.connect('database.db')
-    print "Opened database successfully";
+    if not os.path.isfile(DB_FILE):
+        with sqlite3.connect(DB_FILE) as db:
+            db.execute("""
+                CREATE TABLE events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
+                event_type TEXT, 
+                event TEXT, 
+                date TEXT)
+            """)
+            print 'Table created successfully';
+            db.commit()
 
-    db.execute('CREATE TABLE STATE (fsm_state TEXT, zone1_state TEXT, zone2_state TEXT)')
-    print 'Table created successfully';
+def add_event(event_type, event):
+    with sqlite3.connect(DB_FILE) as db:
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO events (event_type, event, date) VALUES (?,?,?)",(event_type, event, datetime.now()))
+        db.commit()
+        print "Record Added created successfully"
 
-    cur = db.cursor()
+def get_events():
+    with sqlite3.connect(DB_FILE) as db:
+        cursor = db.cursor()
+        cursor.execute("""SELECT id, event_type, event, date FROM events""")
+        events = cursor.fetchall()
+        for event in events:
+            print('{0} : {1} - {2} - {3}'.format(event[0], event[1], event[2], event[3]))
+#            print(event['event'])
+        return events
+#    fsm_state = rows[0]['event']
 
-    fsm_state = 'UNDEFINED'
-    zone1_state = 'UNDEFINED'
-    zone2_state = 'UNDEFINED'
-
-    cur.execute("INSERT INTO STATE (fsm_state,zone1_state,zone2_state) VALUES (?,?,?)",(fsm_state,zone1_state,zone2_state) )            
-    db.commit()
-
-    print "Record created successfully";
-
-    db.close()
-
-def get_fsm_state_state():
-    db = sqlite3.connect('database.db')
-    db.row_factory = sqlite3.Row
-    cur = db.cursor()
-    cur.execute("select * from STATE")
-    rows = cur.fetchall()
-
-    fsm_state = rows[0]['fsm_state']
-    
-    print "fsm_state="+fsm_state
-    return fsm_state
-    
-def set_fsm_state_state():
-    db = sqlite3.connect('database.db')
-    db.row_factory = sqlite3.Row
-    cur = db.cursor()
-    cur.execute("select * from STATE")
-    rows = cur.fetchall()
-    cur.execute("UPDATE STATE SET fsm_state = ?", "toto")
-
-    print "updated fsm_state="+fsm_state
-    
-init_db()
-get_fsm_state_state()
-set_fsm_state_state()
-get_fsm_state_state()
+#init_db()
+#add_event("type", "ev name")
+#get_events()

@@ -1,1 +1,1 @@
-{"24": {"status": "OFF", "gpio": 0, "name": "zone_2"}, "25": {"status": "OFF", "gpio": 0, "name": "zone_3"}, "26": {"status": "OFF", "gpio": 0, "name": "zone_4"}, "23": {"status": "OFF", "gpio": 0, "name": "zone_1"}}
+{"24": {"status": "DETECTING", "gpio": 1, "name": "zone_2"}, "25": {"status": "OFF", "gpio": 0, "name": "zone_3"}, "26": {"status": "OFF", "gpio": 0, "name": "zone_4"}, "23": {"status": "OFF", "gpio": 0, "name": "zone_1"}}

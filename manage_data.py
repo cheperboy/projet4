@@ -3,7 +3,7 @@ from storage_file import *
 from storage_cache import *
 from appconfig import *
 
-STORAGE_TYPE = 'cache'
+STORAGE_TYPE = 'file'
 
 def get_toto():
     toto = cache.get('toto')
