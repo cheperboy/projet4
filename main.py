@@ -5,9 +5,12 @@ from manage_data import *
 from appconfig import *
 from manage_gpio import *
 from database import *
+from datetime import datetime
+
 app = Flask(__name__)
 
 init_data()
+init_db()
 
 def update_zones(ZONES):
     ZONES = get_zone()

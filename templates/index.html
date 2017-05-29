@@ -19,12 +19,12 @@
 	<h1>System state</h1>
     {% if system_state == 'ON' %}
         {% set button_style = "primary" %}
-        {% set label = "ON - click to turn off" %}
+        {% set label = "System ON" %}
         {% set action = "OFF" %}
         {% set disabled = "" %}
     {% elif system_state == 'OFF' %}
         {% set button_style = "default" %}
-        {% set label = "OFF - click to turn on" %}
+        {% set label = "System OFF" %}
         {% set action = "ON" %}
         {% set disabled = "" %}
     {% elif system_state == 'ALARM' %}
@@ -67,13 +67,7 @@
         </button>
     {% endfor %}
    
-<h1>Debug</h1>
-   <p></p>ZONES : {% print zones %}</p>
-   <p>system_state : {% print system_state %}</p>
-   <p>SYSTEM_IN : {% print system %}</p>
-   <p>TOTO : {% print toto %}</p>
-
-
+<h1>Evennements</h1>
 <div class="col-lg-4">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -82,16 +76,10 @@
         <!-- /.panel-heading -->
         <div class="panel-body">
             <div class="list-group">
-                <a href="#" class="list-group-item">
-                    <i class="fa fa-comment fa-fw"></i> New Comment
-                    <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                    </span>
-                </a>
     {% for event in events %}
-        {% set ago = "12 min ago" %}
                 <a href="#" class="list-group-item">
-                    <i class="fa fa-twitter fa-fw"></i>{{ event[2] }}
-                    <span class="pull-right text-muted small"><em>{{ event[3] }}</em>
+                    <i class="fa fa-twitter fa-fw"></i>{{ events[event].name }}
+                    <span class="pull-right text-muted small"><em>{{ events[event].date }}</em>
                     </span>
                 </a>
     {% endfor %}
@@ -104,7 +92,12 @@
 </div>
 <!-- /.panel -->
  
-
+<!--<h1>Debug</h1>
+   <p></p>ZONES : {% print zones %}</p>
+   <p>system_state : {% print system_state %}</p>
+   <p>SYSTEM_IN : {% print system %}</p>
+   <p>TOTO : {% print toto %}</p>
+-->
 
 </body>
 
